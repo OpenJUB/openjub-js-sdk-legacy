@@ -1,5 +1,5 @@
 .DS_Store
-open-jub-js.sublime-workspace
+openjub-js-sdk.sublime-workspace
 
 node_modules
 /dist
