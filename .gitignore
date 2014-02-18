@@ -2,3 +2,4 @@
 open-jub-js.sublime-workspace
 
 node_modules
+/dist
