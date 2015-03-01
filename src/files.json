@@ -1,5 +1,16 @@
 {
   "order": [
-    "src/Main.js"
+    "src/preamble.js",
+
+    "src/requests/index.js",
+    "src/requests/browser.js",
+    "src/requests/node.js",
+
+    "src/index.js",
+    "src/auth.js",
+    "src/user.js",
+    "src/search.js",
+
+    "src/postamble.js"
   ]
 }

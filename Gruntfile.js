@@ -21,6 +21,7 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     openjub: {
       dist: 'dist',
+      docs: 'docs',
       src: 'src',
       banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
           '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -54,13 +55,38 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish'),
         ignores: [
-          '<%= openjub.src %>/vendor/{,*/}*.js'
+          '<%= openjub.src %>/vendor/{,*/}*.js',
+
+          //we want to ignore the pre and post-amble
+          'src/preamble.js',
+          'src/postamble.js'
         ]
       },
-      all: [
-        '<%= openjub.src %>/{,*/}*.js'
-      ]
     },
+    "jsdoc-ng" : {
+      "openjub": {
+        src: ['<%= openjub.src %>', 'README.md' ],
+        dest: '<%= openjub.docs %>',
+        template: 'node_modules/jaguarjs-jsdoc',
+        options:  {
+          source: {
+              includePattern: ".+\\.js(doc)?$",
+              excludePattern: "(^|\\/|\\\\)_",
+              exclude: [
+                'src/preamble.js',
+                'src/postamble.js'
+              ]
+          },
+          opts: {
+              recurse: true,
+              private: true
+          }
+        }
+      }
+    },
+    all: [
+      '<%= openjub.src %>/{,*/}*.js'
+    ], 
     clean: {
       dist: {
         files: [{
@@ -72,6 +98,8 @@ module.exports = function (grunt) {
       }
     }
   });
+
+  grunt.loadNpmTasks('grunt-jsdoc-ng');
 
   grunt.registerTask('build', [
     'jshint',
