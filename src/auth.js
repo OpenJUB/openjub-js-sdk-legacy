@@ -34,6 +34,9 @@ JUB.Client.prototype.signin = function(username, password, callback){
   * @param {JUB.client~callback} callback - Callback once signed out.
   */
 JUB.Client.prototype.signout = function(callback){
+
+  var me = this;
+
   JUB.requests.get(JUB.requests.joinURL(this.server, '/auth/signout'), {
     'token': this.token
   }, function(code, data){

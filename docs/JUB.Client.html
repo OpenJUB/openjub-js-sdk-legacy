@@ -165,9 +165,19 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="JUB.Client#getMe"><a href="JUB.Client.html#getMe">getMe</a></li>
+            
+                <li data-name="JUB.Client#getUserById"><a href="JUB.Client.html#getUserById">getUserById</a></li>
+            
+                <li data-name="JUB.Client#getUserByName"><a href="JUB.Client.html#getUserByName">getUserByName</a></li>
+            
+                <li data-name="JUB.Client#isOnCampus"><a href="JUB.Client.html#isOnCampus">isOnCampus</a></li>
+            
                 <li data-name="JUB.Client#signin"><a href="JUB.Client.html#signin">signin</a></li>
             
                 <li data-name="JUB.Client#signout"><a href="JUB.Client.html#signout">signout</a></li>
+            
+                <li data-name="JUB.Client#status"><a href="JUB.Client.html#status">status</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -336,6 +346,585 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="getMe">
+            
+            getMe<span class="signature">(fields, callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            user.js, line 1
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets info about the current user.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Fields to return.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getUserById">
+            
+            getUserById<span class="signature">(id, fields, callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            user.js, line 31
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets a user by id.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Id of user to find.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Fields to return.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getUserByName">
+            
+            getUserByName<span class="signature">(username, fields, callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            user.js, line 61
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets a user by name.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Username of user to find.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Fields to return.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="isOnCampus">
+            
+            isOnCampus<span class="signature">(callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            auth.js, line 72
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Checks if the client is on campus.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Status callback.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="signin">
             
             signin<span class="signature">(username, passsword, callback)</span>
@@ -343,7 +932,7 @@
     
         
         <div class="tag-source">
-            index.js, line 29
+            auth.js, line 2
         </div>
         
     </div>
@@ -505,7 +1094,7 @@
     
         
         <div class="tag-source">
-            index.js, line 54
+            auth.js, line 30
         </div>
         
     </div>
@@ -610,6 +1199,122 @@
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="status">
+            
+            status<span class="signature">(callback)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            auth.js, line 52
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the current status.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Status callback.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -627,7 +1332,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sun Mar 01 2015 19:30:40 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Mon Mar 02 2015 10:23:50 GMT+0100 (CET)
         </footer>
     </div>
 </div>

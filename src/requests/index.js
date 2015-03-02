@@ -22,7 +22,7 @@ JUB.requests.get = function(url, query, callback){
   if(isBrowser){
     return JUB.requests.browser.get(url, query, callback);
   } else {
-    return JUB.requests.browser.get(url, query, callback);
+    return JUB.requests.node.get(url, query, callback);
   }
 }
 
@@ -38,7 +38,7 @@ JUB.requests.post = function(url, query, post_query, callback){
   if(isBrowser){
     return JUB.requests.browser.post(url, query, post_query, callback);
   } else {
-    return JUB.requests.browser.post(url, query, post_query, callback);
+    return JUB.requests.node.post(url, query, post_query, callback);
   }
 }
 

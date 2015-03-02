@@ -5,7 +5,7 @@
   * @instance
   * @param {JUB.client~callback} callback - Callback
   */
-JUB.Client.prototype.getMe = function(id, fields, callback){
+JUB.Client.prototype.getMe = function(fields, callback){
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){
@@ -27,6 +27,21 @@ JUB.Client.prototype.getMe = function(id, fields, callback){
   });
 }
 
+JUB.Client.prototype.amIAGoat = function(callback){
+  JUB.requests.get(JUB.requests.joinURL(this.server, '/user/me/isagoat'), {},
+  function(code, data){
+    //are we successfull?
+    if(code === 200){
+      callback(undefined, data);
+    } else {
+      //we have an error
+      callback(data['error']);
+    }
+  });
+}
+
+
+/user/me/isagoat
 
 /**
   * Gets a user by id.
