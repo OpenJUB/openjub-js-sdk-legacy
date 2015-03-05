@@ -1,16 +1,20 @@
 {
   "order": [
-    "src/preamble.js",
+    "src/00_preamble.js",
+    "src/01_index.js",
 
-    "src/requests/index.js",
-    "src/requests/browser.js",
-    "src/requests/node.js",
+    "src/01_index.js",
+    "src/02_utils.js",
 
-    "src/index.js",
-    "src/auth.js",
-    "src/user.js",
-    "src/search.js",
+    "src/requests/00_index.js",
+    "src/requests/01_browser.js",
+    "src/requests/02_node.js",
 
-    "src/postamble.js"
+    "src/client/00_index.js",
+    "src/client/01_auth.js",
+    "src/client/02_user.js",
+    "src/client/03_search.js",
+
+    "src/99_postamble.js"
   ]
 }

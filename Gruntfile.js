@@ -58,8 +58,8 @@ module.exports = function (grunt) {
           '<%= openjub.src %>/vendor/{,*/}*.js',
 
           //we want to ignore the pre and post-amble
-          'src/preamble.js',
-          'src/postamble.js'
+          'src/00_preamble.js',
+          'src/99_postamble.js'
         ]
       },
     },
@@ -73,8 +73,8 @@ module.exports = function (grunt) {
               includePattern: ".+\\.js(doc)?$",
               excludePattern: "(^|\\/|\\\\)_",
               exclude: [
-                'src/preamble.js',
-                'src/postamble.js'
+                'src/00_preamble.js',
+                'src/99_postamble.js'
               ]
           },
           opts: {
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
     },
     all: [
       '<%= openjub.src %>/{,*/}*.js'
-    ], 
+    ],
     clean: {
       dist: {
         files: [{
@@ -103,6 +103,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'jshint',
+    'jsdoc-ng',
     'concat',
     'uglify'
   ]);

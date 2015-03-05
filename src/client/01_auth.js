@@ -9,7 +9,9 @@
   */
 JUB.Client.prototype.signin = function(username, password, callback){
 
+  //reference to this and a proper function
   var me = this;
+  callback = JUB.utils.makeFunction(callback);
 
   JUB.requests.post(JUB.requests.joinURL(this.server, '/auth/signin'), {}, {
     "username": username,
@@ -19,6 +21,8 @@ JUB.Client.prototype.signin = function(username, password, callback){
     if(code === 200){
       //store the token.
       me.token = data.token;
+      JUB.utils.setCookie("JUB_token", me.token);
+
       callback(undefined, data);
     } else {
       //we have an error
@@ -35,7 +39,9 @@ JUB.Client.prototype.signin = function(username, password, callback){
   */
 JUB.Client.prototype.signout = function(callback){
 
+  //reference to this and a proper function
   var me = this;
+  callback = JUB.utils.makeFunction(callback);
 
   JUB.requests.get(JUB.requests.joinURL(this.server, '/auth/signout'), {
     'token': this.token
@@ -44,6 +50,7 @@ JUB.Client.prototype.signout = function(callback){
     if(code === 200){
       //delete the token.
       me.token = undefined;
+      JUB.utils.deleteCookie("JUB_token");
       callback(undefined, data);
     } else {
       //we have an error
@@ -59,11 +66,24 @@ JUB.Client.prototype.signout = function(callback){
   * @param {JUB.client~callback} callback - Status callback.
   */
 JUB.Client.prototype.status = function(callback){
+
+  //reference to this and a proper function
+  var me = this;
+  callback = JUB.utils.makeFunction(callback);
+
   JUB.requests.get(JUB.requests.joinURL(this.server, '/auth/status'), {
     'token': this.token
   }, function(code, data){
     //are we successfull?
     if(code === 200){
+
+      //store the token if we got it.
+      if(data.token){
+        me.token = data.token;
+        JUB.utils.setCookie("JUB_token", me.token);
+      }
+
+      //and here goes the callback
       callback(undefined, data);
     } else {
       //we have an error
@@ -79,6 +99,11 @@ JUB.Client.prototype.status = function(callback){
   * @param {JUB.client~callback} callback - Status callback.
   */
 JUB.Client.prototype.isOnCampus = function(callback){
+
+  //reference to this and a proper function
+  var me = this;
+  callback = JUB.utils.makeFunction(callback);
+
   JUB.requests.get(JUB.requests.joinURL(this.server, '/auth/isoncampus'), {},
   function(code, data){
     //are we successfull?

@@ -1,15 +1,13 @@
-
-/**
-  * Namespace for all OpenJUB related functions.
-  * @namespace JUB
-  */
-
 /**
   * Creates a new OpenJUB client.
   * @class JUB.Client
   * @param {string} server - The full adress of the OpenJUB server.
+  * @param {JUB.client~callback} callback - Called when the client is ready. Contains status information.
   */
-JUB.Client = function(server){
+JUB.Client = function(server, callback){
+
+  //make sure callback is a function
+  callback = JUB.utils.makeFunction(callback);
 
   /**
     * The server this JUB client is connected to.
@@ -23,7 +21,13 @@ JUB.Client = function(server){
     * @type {string}
     * @property JUB.Client#token
     */
-  this.token = undefined;
+  this.token = JUB.utils.getCookie("JUB_token");
+
+  //check for the status to get a token.
+  this.status(function(error, data){
+    callback();
+    console.log(data);
+  });
 }
 
 /**

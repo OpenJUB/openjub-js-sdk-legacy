@@ -150,6 +150,37 @@
             </ul>
         </li>
     
+        <li class="item" data-name="JUB.utils">
+            <span class="title">
+                <a href="JUB.utils.html">JUB.utils</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="JUB.utils.deleteCookie"><a href="JUB.utils.html#.deleteCookie">deleteCookie</a></li>
+            
+                <li data-name="JUB.utils.getCookie"><a href="JUB.utils.html#.getCookie">getCookie</a></li>
+            
+                <li data-name="JUB.utils.makeFunction"><a href="JUB.utils.html#.makeFunction">makeFunction</a></li>
+            
+                <li data-name="JUB.utils.setCookie"><a href="JUB.utils.html#.setCookie">setCookie</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="JUB.Client">
             <span class="title">
                 <a href="JUB.Client.html">JUB.Client</a>
@@ -214,12 +245,12 @@
     <div class="nameContainer">
         <h4 class="name" id="Client">
             
-            new JUB.Client<span class="signature">(server)</span>
+            new JUB.Client<span class="signature">(server, callback)</span>
         </h4>
     
         
         <div class="tag-source">
-            index.js, line 7
+            client/00_index.js, line 1
         </div>
         
     </div>
@@ -278,6 +309,29 @@
             <td class="description last">
                 
                 The full adress of the OpenJUB server.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~callback">JUB.client~callback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Called when the client is ready. Contains status information.</td>
         </tr>
 	
 	
@@ -348,12 +402,12 @@
     <div class="nameContainer">
         <h4 class="name" id="getMe">
             
-            getMe<span class="signature">(fields, callback)</span>
+            getMe<span class="signature">(fields, <span class="optional">callback</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            user.js, line 1
+            client/02_user.js, line 1
         </div>
         
     </div>
@@ -411,6 +465,11 @@
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 Fields to return.</td>
         </tr>
 	
@@ -433,6 +492,13 @@
             
             
             <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
                 
                 Callback</td>
         </tr>
@@ -487,12 +553,12 @@
     <div class="nameContainer">
         <h4 class="name" id="getUserById">
             
-            getUserById<span class="signature">(id, fields, callback)</span>
+            getUserById<span class="signature">(id, fields, <span class="optional">callback</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            user.js, line 31
+            client/02_user.js, line 52
         </div>
         
     </div>
@@ -550,6 +616,11 @@
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 Id of user to find.</td>
         </tr>
 	
@@ -573,6 +644,11 @@
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 Fields to return.</td>
         </tr>
 	
@@ -595,6 +671,13 @@
             
             
             <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
                 
                 Callback</td>
         </tr>
@@ -649,12 +732,12 @@
     <div class="nameContainer">
         <h4 class="name" id="getUserByName">
             
-            getUserByName<span class="signature">(username, fields, callback)</span>
+            getUserByName<span class="signature">(username, fields, <span class="optional">callback</span>)</span>
         </h4>
     
         
         <div class="tag-source">
-            user.js, line 61
+            client/02_user.js, line 82
         </div>
         
     </div>
@@ -712,6 +795,11 @@
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 Username of user to find.</td>
         </tr>
 	
@@ -735,6 +823,11 @@
             
             <td class="description last">
                 
+                    
+                    
+                        
+                    
+                
                 Fields to return.</td>
         </tr>
 	
@@ -757,6 +850,13 @@
             
             
             <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
                 
                 Callback</td>
         </tr>
@@ -816,7 +916,7 @@
     
         
         <div class="tag-source">
-            auth.js, line 72
+            client/01_auth.js, line 95
         </div>
         
     </div>
@@ -932,7 +1032,7 @@
     
         
         <div class="tag-source">
-            auth.js, line 2
+            client/01_auth.js, line 2
         </div>
         
     </div>
@@ -1094,7 +1194,7 @@
     
         
         <div class="tag-source">
-            auth.js, line 30
+            client/01_auth.js, line 34
         </div>
         
     </div>
@@ -1210,7 +1310,7 @@
     
         
         <div class="tag-source">
-            auth.js, line 52
+            client/01_auth.js, line 62
         </div>
         
     </div>
@@ -1332,7 +1432,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Mon Mar 02 2015 10:23:50 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Mar 05 2015 14:49:36 GMT+0100 (CET)
         </footer>
     </div>
 </div>
