@@ -47,7 +47,13 @@
             
                 <li data-name="JUB#_data"><a href="JUB.html#_data">_data</a></li>
             
+                <li data-name="JUB#_data"><a href="JUB.html#_data">_data</a></li>
+            
                 <li data-name="JUB#client"><a href="JUB.html#client">client</a></li>
+            
+                <li data-name="JUB#client"><a href="JUB.html#client">client</a></li>
+            
+                <li data-name="JUB#data"><a href="JUB.html#data">data</a></li>
             
                 <li data-name="JUB#data"><a href="JUB.html#data">data</a></li>
             
@@ -214,6 +220,8 @@
             
                 <li data-name="JUB.Client#query"><a href="JUB.Client.html#query">query</a></li>
             
+                <li data-name="JUB.Client#search"><a href="JUB.Client.html#search">search</a></li>
+            
                 <li data-name="JUB.Client#signin"><a href="JUB.Client.html#signin">signin</a></li>
             
                 <li data-name="JUB.Client#signout"><a href="JUB.Client.html#signout">signout</a></li>
@@ -244,6 +252,31 @@
                 <li data-name="JUB.queryResult#next"><a href="JUB.queryResult.html#next">next</a></li>
             
                 <li data-name="JUB.queryResult#prev"><a href="JUB.queryResult.html#prev">prev</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="JUB.searchResult">
+            <span class="title">
+                <a href="JUB.searchResult.html">JUB.searchResult</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="JUB.searchResult#next"><a href="JUB.searchResult.html#next">next</a></li>
+            
+                <li data-name="JUB.searchResult#prev"><a href="JUB.searchResult.html#prev">prev</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1067,7 +1100,7 @@
     
         
         <div class="tag-source">
-            client/03_search.js, line 1
+            client/03_query.js, line 1
         </div>
         
     </div>
@@ -1078,7 +1111,218 @@
     
     
     <div class="description">
-        Looks up users using a query.
+        Looks up users using a machine-readable query.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                Fields to return.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                Limit of results to send.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>skip</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                Skip of results to send.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="JUB.client_.html#~requestCallback">JUB.client~requestCallback</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                Callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="search">
+            
+            search<span class="signature">(fields, <span class="optional">limit</span>, <span class="optional">skip</span>, <span class="optional">callback</span>)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            client/04_search.js, line 1
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Looks up users using a search
     </div>
     
 
@@ -1678,7 +1922,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sat Mar 07 2015 16:54:12 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sat Mar 07 2015 17:02:29 GMT+0100 (CET)
         </footer>
     </div>
 </div>
