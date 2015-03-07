@@ -26,7 +26,6 @@ JUB.Client = function(server, callback){
   //check for the status to get a token.
   this.status(function(error, data){
     callback();
-    console.log(data);
   });
 }
 
