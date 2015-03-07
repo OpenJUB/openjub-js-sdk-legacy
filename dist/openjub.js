@@ -1,4 +1,4 @@
-/*! openjub-js-sdk - v0.0.1 - 2015-03-05 */
+/*! openjub-js-sdk - v0.0.1 - 2015-03-07 */
 "use strict";
 // Source: src/00_preamble.js
 (function(exports, isBrowser){
@@ -212,11 +212,26 @@ JUB.requests.joinURL = function(base, url){
   * @returns {string} - The full URL
   */
 JUB.requests.buildGETUrl = function(url, query){
+
+  //extract the parameters from the url itself.
+  var parameters = JUB.requests.extractGetParams(url);
+
+  //and remove them from the url
+  url = url.split('?')[0];
+
   //the query string
   var query_string = '';
 
-  //build the query string
+
+  //overwrite the parameters with the query
   for(var key in query){
+    if(query.hasOwnProperty(key)){
+      parameters[key] = query[key];
+    }
+  }
+
+  //build the query string
+  for(var key in parameters){
     if(query.hasOwnProperty(key)){
       if(typeof query[key] !== 'undefined'){
         //encode this component
@@ -233,6 +248,52 @@ JUB.requests.buildGETUrl = function(url, query){
 
   //return the full query string.
   return url + query_string;
+}
+
+/**
+  * Extracts GET parameters from a url.
+  * @function JUB.requests.extractGetParams
+  * @param {string} url - URL to extract parameters from.
+  * @returns {object} - A JSON-style object for the parameters.
+  */
+JUB.requests.extractGetParams = function(url){
+  var results = {};
+
+  //we need to check that we have a questionmark.
+  if(url.indexOf('?') !== -1){
+
+    //so split by it.
+    var params = url.split('?');
+
+    //remove the normal url.
+    params.shift();
+
+    //join it back together and find the parameters.
+    params = params.join('?');
+    params = params.split('&');
+
+    //go over them.
+    for(var i=0; i<params.length;i++){
+
+      //split this parameter by equality.
+      var parameter = params[i].split('=');
+
+      //get the name
+      var name = unescape(parameter.shift());
+
+      //get the value
+      var value = unescape(parameter.join('='));
+
+      //only store the first instance.
+      if(!results.hasOwnProperty(name)){
+          results[name] = value;
+      }
+    }
+  }
+
+  //and return the results.
+  return results;
+
 }
 
 // Source: src/requests/01_browser.js
@@ -358,7 +419,6 @@ JUB.Client = function(server, callback){
   //check for the status to get a token.
   this.status(function(error, data){
     callback();
-    console.log(data);
   });
 }
 
@@ -606,7 +666,125 @@ JUB.Client.prototype.getUserByName = function(username, fields, callback){
 }
 
 // Source: src/client/03_search.js
-//TODO: Search
+/**
+  * Looks up users using a query.
+  * @param {string[]} fields - Fields to return.
+  * @param {number} [limit] - Limit of results to send.
+  * @param {number} [skip] - Skip of results to send.
+  * @param {JUB.client~requestCallback} [callback] - Callback
+  * @function JUB.Client#query
+  * @instance
+  */
+JUB.Client.prototype.query = function(query, fields, limit, skip, callback){
+
+  //this is me.
+  var me = this;
+
+  //if we skipped limit, skip
+  if(typeof limit === 'function'){
+    callback = limit;
+    limit = undefined;
+    skip = undefined;
+  }
+
+  //Make sure its a function.
+  callback = JUB.utils.makeFunction(callback);
+
+  //if we do not have fields, reset them.
+  if(fields && fields.length == 0){
+    fields = undefined;
+  }
+
+  JUB.requests.get(JUB.requests.joinURL(this.server, 'query/'+escape(query)), {
+    'fields': fields,
+    'limit': limit,
+    'skip': skip,
+    'token': this.token
+  },
+  function(code, data){
+    //are we successfull?
+    if(code === 200){
+      //Make a new query result.
+      callback(undefined, new JUB.queryResult(data, me));
+    } else {
+      //we have an error
+      callback(data['error']);
+    }
+  });
+}
+
+/**
+ * Callback for OpenJUB requests.
+ * @callback JUB.client~requestCallback
+ * @param {string|undefined} error - An error message if something went wrong or undefined otherwise.
+ * @param {JUB.queryResult} result - Query result sent back from OpenJUB.
+ */
+
+ /**
+   * Represents a query result.
+   * @param {object} data - raw json data result.
+   * @param {JUB.Client} client - Client the result was originally made with.
+   * @function JUB.queryResult
+   * @class
+   */
+JUB.queryResult = function(data, client){
+  /**
+    * Client the result was originally made with.
+    * @type {JUB.client}
+    * @property JUB.queryResult#client
+    */
+  this.client = client;
+
+  /**
+    * raw json data result.
+    * @type {object}
+    * @property JUB.queryResult#_data
+    */
+  this._data = data;
+
+  /**
+    * JSON-style results of the query.
+    * @type {object[]}
+    * @property JUB.queryResult#data
+    */
+  this.data = data.data;
+}
+
+/**
+  * Gets the next page of the result.
+  * @param {JUB.client~requestCallback} [callback] - Callback
+  * @function JUB.queryResult#next
+  * @instance
+  */
+JUB.queryResult.prototype.next = function(callback){
+  var params = JUB.requests.extractGetParams(this._data.next);
+
+  //extract the parameters
+  params.fields = params.fields?params.fields.split(","):undefined;
+  params.limit = parseInt(params.limit) || undefined;
+  params.skip = parseInt(params.skip) || undefined;
+
+  //and send the next result.
+  return this.query(params, params.fields, params.limit, params.skip, callback);
+}
+
+/**
+  * Gets the previous page of the result.
+  * @param {JUB.client~requestCallback} [callback] - Callback
+  * @function JUB.queryResult#prev
+  * @instance
+  */
+JUB.queryResult.prototype.prev = function(callback){
+  var params = JUB.requests.extractGetParams(this._data.prev);
+
+  //extract the parameters
+  params.fields = params.fields?params.fields.split(","):undefined;
+  params.limit = parseInt(params.limit) || undefined;
+  params.skip = parseInt(params.skip) || undefined;
+
+  //and send the prev result.
+  return this.query(params, params.fields, params.limit, params.skip, callback);
+}
 
 // Source: src/99_postamble.js
   //export JUB. 

@@ -85,11 +85,26 @@ JUB.requests.joinURL = function(base, url){
   * @returns {string} - The full URL
   */
 JUB.requests.buildGETUrl = function(url, query){
+
+  //extract the parameters from the url itself.
+  var parameters = JUB.requests.extractGetParams(url);
+
+  //and remove them from the url
+  url = url.split('?')[0];
+
   //the query string
   var query_string = '';
 
-  //build the query string
+
+  //overwrite the parameters with the query
   for(var key in query){
+    if(query.hasOwnProperty(key)){
+      parameters[key] = query[key];
+    }
+  }
+
+  //build the query string
+  for(var key in parameters){
     if(query.hasOwnProperty(key)){
       if(typeof query[key] !== 'undefined'){
         //encode this component
@@ -106,4 +121,50 @@ JUB.requests.buildGETUrl = function(url, query){
 
   //return the full query string.
   return url + query_string;
+}
+
+/**
+  * Extracts GET parameters from a url.
+  * @function JUB.requests.extractGetParams
+  * @param {string} url - URL to extract parameters from.
+  * @returns {object} - A JSON-style object for the parameters.
+  */
+JUB.requests.extractGetParams = function(url){
+  var results = {};
+
+  //we need to check that we have a questionmark.
+  if(url.indexOf('?') !== -1){
+
+    //so split by it.
+    var params = url.split('?');
+
+    //remove the normal url.
+    params.shift();
+
+    //join it back together and find the parameters.
+    params = params.join('?');
+    params = params.split('&');
+
+    //go over them.
+    for(var i=0; i<params.length;i++){
+
+      //split this parameter by equality.
+      var parameter = params[i].split('=');
+
+      //get the name
+      var name = unescape(parameter.shift());
+
+      //get the value
+      var value = unescape(parameter.join('='));
+
+      //only store the first instance.
+      if(!results.hasOwnProperty(name)){
+          results[name] = value;
+      }
+    }
+  }
+
+  //and return the results.
+  return results;
+
 }
