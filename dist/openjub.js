@@ -869,7 +869,7 @@ JUB.queryResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.query(this.query, params.fields, params.limit, params.skip, callback);
+  return this.client.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -887,7 +887,7 @@ JUB.queryResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.query(this.query, params.fields, params.limit, params.skip, callback);
+  return this.client.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 // Source: src/client/04_search.js
@@ -1001,7 +1001,7 @@ JUB.searchResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.search(this.search, params.fields, params.limit, params.skip, callback);
+  return this.client.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -1019,7 +1019,7 @@ JUB.searchResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.search(this.search, params.fields, params.limit, params.skip, callback);
+  return this.client.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 // Source: src/99_postamble.js

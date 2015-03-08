@@ -108,7 +108,7 @@ JUB.queryResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.query(this.query, params.fields, params.limit, params.skip, callback);
+  return this.client.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -126,5 +126,5 @@ JUB.queryResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.query(this.query, params.fields, params.limit, params.skip, callback);
+  return this.client.query(this.query, params.fields, params.limit, params.skip, callback);
 }

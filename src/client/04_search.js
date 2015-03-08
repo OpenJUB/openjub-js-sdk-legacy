@@ -108,7 +108,7 @@ JUB.searchResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.search(this.search, params.fields, params.limit, params.skip, callback);
+  return this.client.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -126,5 +126,5 @@ JUB.searchResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.search(this.search, params.fields, params.limit, params.skip, callback);
+  return this.client.search(this.search, params.fields, params.limit, params.skip, callback);
 }
