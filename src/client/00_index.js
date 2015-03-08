@@ -1,7 +1,7 @@
 /**
   * Creates a new OpenJUB client.
   * @class JUB.Client
-  * @param {string} server - The full adress of the OpenJUB server.
+  * @param {string} server - The full adress of the OpenJUB server. Has to include protocol, port and may not have a trailing slash.
   * @param {JUB.client~callback} callback - Called when the client is ready. Contains status information.
   */
 JUB.Client = function(server, callback){
@@ -22,6 +22,13 @@ JUB.Client = function(server, callback){
     * @property JUB.Client#token
     */
   this.token = JUB.utils.getCookie("JUB_token");
+
+  /**
+    * Name of the currently signed in user. 
+    * @type {string}
+    * @property JUB.Client#user
+    */
+  this.user = undefined;
 
   //check for the status to get a token.
   this.status(function(error, data){

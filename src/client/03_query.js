@@ -1,5 +1,5 @@
 /**
-  * Looks up users using a machine-readable query. 
+  * Looks up users using a machine-readable query.
   * @param {string[]} fields - Fields to return.
   * @param {number} [limit] - Limit of results to send.
   * @param {number} [skip] - Skip of results to send.
@@ -37,10 +37,13 @@ JUB.Client.prototype.query = function(query, fields, limit, skip, callback){
     //are we successfull?
     if(code === 200){
       //Make a new query result.
-      callback(undefined, new JUB.queryResult(data, me));
+      callback(undefined, new JUB.queryResult(data, query, me));
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -55,17 +58,25 @@ JUB.Client.prototype.query = function(query, fields, limit, skip, callback){
  /**
    * Represents a query result.
    * @param {object} data - raw json data result.
+   * @param {string} query - The original query.
    * @param {JUB.Client} client - Client the result was originally made with.
    * @function JUB.queryResult
    * @class
    */
-JUB.queryResult = function(data, client){
+JUB.queryResult = function(data, query, client){
   /**
     * Client the result was originally made with.
     * @type {JUB.client}
     * @property JUB.queryResult#client
     */
   this.client = client;
+
+  /**
+    * The original query.
+    * @type {string}
+    * @property JUB.queryResult#query
+    */
+  this.query = query;
 
   /**
     * raw json data result.
@@ -97,7 +108,7 @@ JUB.queryResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.query(params, params.fields, params.limit, params.skip, callback);
+  return this.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -115,5 +126,5 @@ JUB.queryResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.query(params, params.fields, params.limit, params.skip, callback);
+  return this.query(this.query, params.fields, params.limit, params.skip, callback);
 }

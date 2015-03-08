@@ -25,8 +25,13 @@ JUB.Client.prototype.getMe = function(fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
+
     }
   });
 }
@@ -43,8 +48,11 @@ JUB.Client.prototype.amIAGoat = function(callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -58,6 +66,8 @@ JUB.Client.prototype.amIAGoat = function(callback){
   * @param {JUB.client~callback} [callback] - Callback
   */
 JUB.Client.prototype.getUserById = function(id, fields, callback){
+
+  var me = this;
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){
@@ -73,8 +83,11 @@ JUB.Client.prototype.getUserById = function(id, fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -88,6 +101,8 @@ JUB.Client.prototype.getUserById = function(id, fields, callback){
   * @param {JUB.client~callback} [callback] - Callback
   */
 JUB.Client.prototype.getUserByName = function(username, fields, callback){
+
+  var me = this; 
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){
@@ -103,8 +118,11 @@ JUB.Client.prototype.getUserByName = function(username, fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }

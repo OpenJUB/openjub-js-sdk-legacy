@@ -1,4 +1,4 @@
-/*! openjub-js-sdk - v0.0.1 - 2015-03-07 */
+/*! openjub-js-sdk - v0.0.1 - 2015-03-08 */
 "use strict";
 // Source: src/00_preamble.js
 (function(exports, isBrowser){
@@ -394,7 +394,7 @@ JUB.requests.node.post = function(url, query, post_query, callback){
 /**
   * Creates a new OpenJUB client.
   * @class JUB.Client
-  * @param {string} server - The full adress of the OpenJUB server.
+  * @param {string} server - The full adress of the OpenJUB server. Has to include protocol, port and may not have a trailing slash.
   * @param {JUB.client~callback} callback - Called when the client is ready. Contains status information.
   */
 JUB.Client = function(server, callback){
@@ -415,6 +415,13 @@ JUB.Client = function(server, callback){
     * @property JUB.Client#token
     */
   this.token = JUB.utils.getCookie("JUB_token");
+
+  /**
+    * Name of the currently signed in user. 
+    * @type {string}
+    * @property JUB.Client#user
+    */
+  this.user = undefined;
 
   //check for the status to get a token.
   this.status(function(error, data){
@@ -485,9 +492,11 @@ JUB.Client.prototype.signout = function(callback){
   }, function(code, data){
     //are we successfull?
     if(code === 200){
-      //delete the token.
+      //clear token and user. 
       me.token = undefined;
+      me.user = undefined;
       JUB.utils.deleteCookie("JUB_token");
+
       callback(undefined, data);
     } else {
       //we have an error
@@ -514,9 +523,25 @@ JUB.Client.prototype.status = function(callback){
     //are we successfull?
     if(code === 200){
 
+      if(!data.user){
+
+
+        //clear token and user
+        me.token = undefined;
+        me.user = undefined;
+        JUB.utils.deleteCookie("JUB_token");
+
+        //and here goes the callback
+        //so soon because we do not have a user.
+        callback(undefined, data);
+
+        return;
+      }
+
       //store the token if we got it.
       if(data.token){
         me.token = data.token;
+        me.user = data.user;
         JUB.utils.setCookie("JUB_token", me.token);
       }
 
@@ -553,6 +578,56 @@ JUB.Client.prototype.isOnCampus = function(callback){
   });
 }
 
+/**
+  * Opens a new window to allow for authentication of the user.
+  * Not supported in node.
+  * @function JUB.Client#authenticate
+  * @instance
+  * @param {JUB.client~callback} callback - Callback once token is ready.
+  */
+JUB.Client.prototype.authenticate = function(callback){
+
+  //if we are node, exit
+  if(!isBrowser){
+    return;
+  }
+
+  //have a reference to me
+  var me = this;
+
+
+  var _handleMessage = function(e){
+    //return unless it is the right message
+    if(e.origin !== me.server){
+      return;
+    }
+
+    //remove the event handler.
+    window.removeEventListener(_handleMessage);
+
+    //read the data correctly
+    var token = (typeof e.data === 'string'?JSON.parse(e.data):e.data).token;
+
+    //store the token
+    me.token = token;
+
+    //and call the status
+    me.status(callback);
+  }
+
+
+
+  //listen to events.
+  window.addEventListener('message', _handleMessage);
+
+  //open the window for authentication.
+  window.open(
+    JUB.requests.joinURL(this.server, '/view/login'),
+    '_blank',
+    'width=500, height=400, resizeable=no, toolbar=no, scrollbar=no, location=no'
+  );
+}
+
 // Source: src/client/02_user.js
 /**
   * Gets info about the current user.
@@ -581,8 +656,13 @@ JUB.Client.prototype.getMe = function(fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
+
     }
   });
 }
@@ -599,8 +679,11 @@ JUB.Client.prototype.amIAGoat = function(callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -614,6 +697,8 @@ JUB.Client.prototype.amIAGoat = function(callback){
   * @param {JUB.client~callback} [callback] - Callback
   */
 JUB.Client.prototype.getUserById = function(id, fields, callback){
+
+  var me = this;
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){
@@ -629,8 +714,11 @@ JUB.Client.prototype.getUserById = function(id, fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -644,6 +732,8 @@ JUB.Client.prototype.getUserById = function(id, fields, callback){
   * @param {JUB.client~callback} [callback] - Callback
   */
 JUB.Client.prototype.getUserByName = function(username, fields, callback){
+
+  var me = this; 
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){
@@ -659,15 +749,18 @@ JUB.Client.prototype.getUserByName = function(username, fields, callback){
     if(code === 200){
       callback(undefined, data);
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
 
 // Source: src/client/03_query.js
 /**
-  * Looks up users using a machine-readable query. 
+  * Looks up users using a machine-readable query.
   * @param {string[]} fields - Fields to return.
   * @param {number} [limit] - Limit of results to send.
   * @param {number} [skip] - Skip of results to send.
@@ -705,10 +798,13 @@ JUB.Client.prototype.query = function(query, fields, limit, skip, callback){
     //are we successfull?
     if(code === 200){
       //Make a new query result.
-      callback(undefined, new JUB.queryResult(data, me));
+      callback(undefined, new JUB.queryResult(data, query, me));
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -723,17 +819,25 @@ JUB.Client.prototype.query = function(query, fields, limit, skip, callback){
  /**
    * Represents a query result.
    * @param {object} data - raw json data result.
+   * @param {string} query - The original query.
    * @param {JUB.Client} client - Client the result was originally made with.
    * @function JUB.queryResult
    * @class
    */
-JUB.queryResult = function(data, client){
+JUB.queryResult = function(data, query, client){
   /**
     * Client the result was originally made with.
     * @type {JUB.client}
     * @property JUB.queryResult#client
     */
   this.client = client;
+
+  /**
+    * The original query.
+    * @type {string}
+    * @property JUB.queryResult#query
+    */
+  this.query = query;
 
   /**
     * raw json data result.
@@ -765,7 +869,7 @@ JUB.queryResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.query(params, params.fields, params.limit, params.skip, callback);
+  return this.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -783,7 +887,7 @@ JUB.queryResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.query(params, params.fields, params.limit, params.skip, callback);
+  return this.query(this.query, params.fields, params.limit, params.skip, callback);
 }
 
 // Source: src/client/04_search.js
@@ -826,10 +930,13 @@ JUB.Client.prototype.search = function(search, fields, limit, skip, callback){
     //are we successfull?
     if(code === 200){
       //Make a new search result.
-      callback(undefined, new JUB.searchResult(data, me));
+      callback(undefined, new JUB.searchResult(data, search, me));
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -844,17 +951,25 @@ JUB.Client.prototype.search = function(search, fields, limit, skip, callback){
  /**
    * Represents a search result.
    * @param {object} data - raw json data result.
+   * @param {string} search - The original search.
    * @param {JUB.Client} client - Client the result was originally made with.
    * @function JUB.searchResult
    * @class
    */
-JUB.searchResult = function(data, client){
+JUB.searchResult = function(data, search, client){
   /**
     * Client the result was originally made with.
     * @type {JUB.client}
     * @property JUB.searchResult#client
     */
   this.client = client;
+
+  /**
+    * The original search.
+    * @type {string}
+    * @property JUB.searchResult#search
+    */
+  this.search = search;
 
   /**
     * raw json data result.
@@ -886,7 +1001,7 @@ JUB.searchResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.search(params, params.fields, params.limit, params.skip, callback);
+  return this.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -904,7 +1019,7 @@ JUB.searchResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.search(params, params.fields, params.limit, params.skip, callback);
+  return this.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 // Source: src/99_postamble.js

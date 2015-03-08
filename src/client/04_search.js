@@ -37,10 +37,13 @@ JUB.Client.prototype.search = function(search, fields, limit, skip, callback){
     //are we successfull?
     if(code === 200){
       //Make a new search result.
-      callback(undefined, new JUB.searchResult(data, me));
+      callback(undefined, new JUB.searchResult(data, search, me));
     } else {
-      //we have an error
-      callback(data['error']);
+      //check the status if we had an error.
+      me.status(function(){
+        //we have an error
+        callback(data['error']);
+      });
     }
   });
 }
@@ -55,17 +58,25 @@ JUB.Client.prototype.search = function(search, fields, limit, skip, callback){
  /**
    * Represents a search result.
    * @param {object} data - raw json data result.
+   * @param {string} search - The original search.
    * @param {JUB.Client} client - Client the result was originally made with.
    * @function JUB.searchResult
    * @class
    */
-JUB.searchResult = function(data, client){
+JUB.searchResult = function(data, search, client){
   /**
     * Client the result was originally made with.
     * @type {JUB.client}
     * @property JUB.searchResult#client
     */
   this.client = client;
+
+  /**
+    * The original search.
+    * @type {string}
+    * @property JUB.searchResult#search
+    */
+  this.search = search;
 
   /**
     * raw json data result.
@@ -97,7 +108,7 @@ JUB.searchResult.prototype.next = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the next result.
-  return this.search(params, params.fields, params.limit, params.skip, callback);
+  return this.search(this.search, params.fields, params.limit, params.skip, callback);
 }
 
 /**
@@ -115,5 +126,5 @@ JUB.searchResult.prototype.prev = function(callback){
   params.skip = parseInt(params.skip) || undefined;
 
   //and send the prev result.
-  return this.search(params, params.fields, params.limit, params.skip, callback);
+  return this.search(this.search, params.fields, params.limit, params.skip, callback);
 }
