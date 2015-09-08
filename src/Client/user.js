@@ -1,3 +1,9 @@
+var JUB = {
+  'utils': require('../utils'),
+  'requests': require('../requests')
+};
+JUB.Client = module.exports = {'prototype': {}};
+
 /**
   * Gets info about the current user.
   * @param {string[]} fields - Fields to return.
@@ -5,7 +11,7 @@
   * @instance
   * @param {JUB.client~callback} [callback] - Callback
   */
-JUB.Client.prototype.getMe = function(fields, callback){
+var getMe = JUB.Client.prototype.getMe = function getMe(fields, callback){
 
   //reference to this and a proper function
   var me = this;
@@ -36,9 +42,14 @@ JUB.Client.prototype.getMe = function(fields, callback){
   });
 }
 
-JUB.Client.prototype.amIAGoat = function(callback){
+/**
+  * Checks if the current user is a goat.
+  * @function JUB.Client#amIAGoat
+  * @instance
+  * @param {JUB.client~callback} [callback] - Callback
+  */
+var amIAGoat = JUB.Client.prototype.amIAGoat = function amIAGoat(callback){
 
-  //reference to this and a proper function
   var me = this;
   callback = JUB.utils.makeFunction(callback);
 
@@ -65,7 +76,7 @@ JUB.Client.prototype.amIAGoat = function(callback){
   * @instance
   * @param {JUB.client~callback} [callback] - Callback
   */
-JUB.Client.prototype.getUserById = function(id, fields, callback){
+var getUserById = JUB.Client.prototype.getUserById = function getUserById(id, fields, callback){
 
   var me = this;
 
@@ -100,9 +111,9 @@ JUB.Client.prototype.getUserById = function(id, fields, callback){
   * @instance
   * @param {JUB.client~callback} [callback] - Callback
   */
-JUB.Client.prototype.getUserByName = function(username, fields, callback){
+var getUserByName = JUB.Client.prototype.getUserByName = function getUserByName(username, fields, callback){
 
-  var me = this; 
+  var me = this;
 
   //if we do not have fields, reset them.
   if(fields && fields.length == 0){

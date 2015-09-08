@@ -1,14 +1,24 @@
+var JUB = {};
+JUB.requests = module.exports = {};
+
+// use a few libs
+if(process.browser){
+  var request = require('browser-request');
+} else {
+  var request = require('request');
+}
+
+
 /**
   * Helper namespace for Request functions.
   * @namespace JUB.requests
   */
-JUB.requests = {}
 
 /**
  * Calback for requests.
  * @callback JUB.requests~callback
  * @param {number} status_code - The status code returned by the server.
- * @param {object} content - The JSON content of the message.
+ * @param {object|string} content - The JSON content of the message. If the parser fails, returns a string containing the document.
  */
 
 /**
@@ -18,13 +28,24 @@ JUB.requests = {}
   * @param {object} query - GET Query parameters to send along with the request.
   * @param {JUB.requests~callback} callback - Callback once the request finishes.
   */
-JUB.requests.get = function(url, query, callback){
-  if(isBrowser){
-    return JUB.requests.browser.get(url, query, callback);
-  } else {
-    return JUB.requests.node.get(url, query, callback);
-  }
-}
+var get = JUB.requests.get = function get(url, query, callback){
+   // build a url.
+   var get_url = JUB.requests.buildGETUrl(url, query);
+
+   request({
+     method:'GET',
+     uri: get_url
+   }, function(err, res, body){
+     try{
+       var buffer = JSON.parse(body);
+     } catch(e) {
+       callback(res.statusCode, buffer);
+       return;
+     }
+
+     callback(res.statusCode, buffer);
+   });
+};
 
 /**
   * Makes a JSONP POST request.
@@ -34,12 +55,25 @@ JUB.requests.get = function(url, query, callback){
   * @param {object} post_query - POST parameters to send along with the request.
   * @param {JUB.requests~callback} callback - Callback once the request finishes.
   */
-JUB.requests.post = function(url, query, post_query, callback){
-  if(isBrowser){
-    return JUB.requests.browser.post(url, query, post_query, callback);
-  } else {
-    return JUB.requests.node.post(url, query, post_query, callback);
-  }
+var post = JUB.requests.post = function post(url, query, post_query, callback){
+  // build a url.
+  var get_url = JUB.requests.buildGETUrl(url, query);
+  var post_data = JSON.stringify(post_query);
+
+  request({
+    method:'POST',
+    uri:get_url,
+    body:post_data
+  }, function(err, res, body){
+    try{
+      var buffer = JSON.parse(body);
+    } catch(e) {
+      callback(res.statusCode, buffer);
+      return;
+    }
+
+    callback(res.statusCode, buffer);
+  });
 }
 
 /**
@@ -49,7 +83,7 @@ JUB.requests.post = function(url, query, post_query, callback){
   * @param {string} url - URL on the server.
   * @returns {string} - The full url.
   */
-JUB.requests.joinURL = function(base, url){
+var joinURL = JUB.requests.joinURL = function joinURL(base, url){
 
   //http base
   var base_http = 'http://';
@@ -74,7 +108,7 @@ JUB.requests.joinURL = function(base, url){
   }
 
   //return the base + url.
-  return base + url;
+  return encodeURI(base + url);
 }
 
 /**
@@ -84,7 +118,7 @@ JUB.requests.joinURL = function(base, url){
   * @param {object[]} query - GET query parameters.
   * @returns {string} - The full URL
   */
-JUB.requests.buildGETUrl = function(url, query){
+var buildGETUrl = JUB.requests.buildGETUrl = function buildGETUrl(url, query){
 
   //extract the parameters from the url itself.
   var parameters = JUB.requests.extractGetParams(url);
@@ -129,7 +163,7 @@ JUB.requests.buildGETUrl = function(url, query){
   * @param {string} url - URL to extract parameters from.
   * @returns {object} - A JSON-style object for the parameters.
   */
-JUB.requests.extractGetParams = function(url){
+var extractGetParams = JUB.requests.extractGetParams = function extractGetParams(url){
   var results = {};
 
   //we need to check that we have a questionmark.

@@ -19,5 +19,5 @@
   "strict": true,
   "trailing": true,
   "smarttabs": true,
-  "predef": ["exports", "isBrowser", "JUB"]
+  "predef": []
 }

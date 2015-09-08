@@ -1,3 +1,8 @@
+var JUB = {
+  'utils': require('../utils'),
+  'requests': require('../requests')
+};
+JUB.Client = module.exports = {'prototype': {}};
 
 /**
   * Signs in using the specefied credentials.
@@ -7,7 +12,7 @@
   * @param {string} passsword - Password to authenticate with.
   * @param {JUB.client~callback} callback - Callback once signed in.
   */
-JUB.Client.prototype.signin = function(username, password, callback){
+var signin = JUB.Client.prototype.signin = function signin(username, password, callback){
 
   //reference to this and a proper function
   var me = this;
@@ -23,6 +28,9 @@ JUB.Client.prototype.signin = function(username, password, callback){
       me.token = data.token;
       JUB.utils.setCookie("JUB_token", me.token);
 
+      // and reload autocomplete
+      me.getAutoComplete();
+
       callback(undefined, data);
     } else {
       //we have an error
@@ -37,7 +45,7 @@ JUB.Client.prototype.signin = function(username, password, callback){
   * @instance
   * @param {JUB.client~callback} callback - Callback once signed out.
   */
-JUB.Client.prototype.signout = function(callback){
+var signout = JUB.Client.prototype.signout = function signout(callback){
 
   //reference to this and a proper function
   var me = this;
@@ -48,7 +56,7 @@ JUB.Client.prototype.signout = function(callback){
   }, function(code, data){
     //are we successfull?
     if(code === 200){
-      //clear token and user. 
+      //clear token and user.
       me.token = undefined;
       me.user = undefined;
       JUB.utils.deleteCookie("JUB_token");
@@ -67,7 +75,7 @@ JUB.Client.prototype.signout = function(callback){
   * @instance
   * @param {JUB.client~callback} callback - Status callback.
   */
-JUB.Client.prototype.status = function(callback){
+var status = JUB.Client.prototype.status = function status(callback){
 
   //reference to this and a proper function
   var me = this;
@@ -80,8 +88,6 @@ JUB.Client.prototype.status = function(callback){
     if(code === 200){
 
       if(!data.user){
-
-
         //clear token and user
         me.token = undefined;
         me.user = undefined;
@@ -116,7 +122,7 @@ JUB.Client.prototype.status = function(callback){
   * @instance
   * @param {JUB.client~callback} callback - Status callback.
   */
-JUB.Client.prototype.isOnCampus = function(callback){
+var isOnCampus = JUB.Client.prototype.isOnCampus = function isOnCampus(callback){
 
   //reference to this and a proper function
   var me = this;
@@ -141,10 +147,10 @@ JUB.Client.prototype.isOnCampus = function(callback){
   * @instance
   * @param {JUB.client~callback} callback - Callback once token is ready.
   */
-JUB.Client.prototype.authenticate = function(callback){
+var authenticate = JUB.Client.prototype.authenticate = function authenticate(callback){
 
   //if we are node, exit
-  if(!isBrowser){
+  if(!process.browser){
     return;
   }
 
@@ -169,6 +175,9 @@ JUB.Client.prototype.authenticate = function(callback){
 
     //and call the status
     me.status(callback);
+
+    // and reaload autocomplete
+    me.getAutoComplete();
   }
 
 

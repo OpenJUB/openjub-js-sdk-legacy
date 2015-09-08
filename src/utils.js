@@ -1,9 +1,39 @@
+var JUB = {};
+JUB.utils = module.exports = {};
+
+var util = require('util');
+var timers = require('timers');
+
 /**
   * Namespace for Utility functions.
   * @namespace JUB.utils
   */
 
-JUB.utils = {};
+  /** Runs a function asyncronously.
+    * @function JUB.utils.setImmediate
+    * @static
+    * @param {function} f - Function to run.
+    */
+var setImmediate = JUB.utils.setImmediate = function setImmediate(f){
+  return timers.setImmediate.apply(timers, arguments);
+}
+
+/** Makes sure a function runs at most every delay seconds.
+  * @function JUB.utils.debounce
+  * @static
+  * @param {function} f - Function to run.
+  * @param {number} delay - Delay to wait.
+  * @returns {function}
+  */
+var debounce = JUB.utils.debounce = function debounce(f, delay){
+  var timerId;
+  return function(){
+    var me = this;
+    var args = arguments;
+    clearTimeout(timerId);
+    timerId = setTimeout(function(){return f.apply(me, args); }, delay);
+  };
+}
 
 /** Turns the argument into a function.
   * @function JUB.utils.makeFunction
@@ -11,7 +41,7 @@ JUB.utils = {};
   * @param {object} obj - Object to turn into a function.
   * @returns {function}
   */
-JUB.utils.makeFunction = function(obj){
+var makeFunction = JUB.utils.makeFunction = function makeFunction(obj){
 
   //if it is already a function, return it.
   if(typeof obj === 'function'){
@@ -24,6 +54,15 @@ JUB.utils.makeFunction = function(obj){
   };
 }
 
+/** Extends an object by properties.
+  * @function JUB.utils.extend
+  * @static
+  * @param {object} origin - Original object to extend
+  * @param {object} add - Object to extend with.
+  * @returns {object} The extended origin
+  */
+var extend = JUB.utils.extend = util._extend;
+
 /** Sets a cookie (if possible).
   * @function JUB.utils.setCookie
   * @static
@@ -31,10 +70,10 @@ JUB.utils.makeFunction = function(obj){
   * @param {string} value - Value to set cookie to.
   * @returns {string} the value of the cookie.
   */
-JUB.utils.setCookie = function(name, value){
+var setCookie = JUB.utils.setCookie = function setCookie(name, value){
 
   //we only need to do things if we are in the browser.
-  if(isBrowser){
+  if(process.browser){
     //adapted from http://www.w3schools.com/js/js_cookies.asp
 
     //the cookie should expire in one day.
@@ -58,10 +97,10 @@ JUB.utils.setCookie = function(name, value){
   * @static
   * @param {string} name - Name of cookie to delete.
   */
-JUB.utils.deleteCookie = function(name){
+var deleteCookie = JUB.utils.deleteCookie = function deleteCookie(name){
 
   //we only need to do things if we are in the browser.
-  if(isBrowser){
+  if(process.browser){
     //adapted from http://www.w3schools.com/js/js_cookies.asp
 
     //just set the cookie to expire a long time ago.
@@ -80,10 +119,10 @@ JUB.utils.deleteCookie = function(name){
   * @param {string} name - Name of cookie to get.
   * @returns {string} the value of the cookie.
   */
-JUB.utils.getCookie = function(name){
+var getCookie = JUB.utils.getCookie = function getCookie(name){
 
   //if we are the browser, we should search
-  if(isBrowser){
+  if(process.browser){
     //adapted from http://www.w3schools.com/js/js_cookies.asp
 
     //we want to search for something.

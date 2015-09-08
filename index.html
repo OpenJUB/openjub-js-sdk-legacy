@@ -6,18 +6,65 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>OpenJUB SDK Test</title>
+    <title>OpenJUB SDK DEMO</title>
 </head>
 <body>
-    <!-- TODO: Make a simple search here to demo functionality -->
+
+    <h1>OpenJUB SDK DEMO</h1>
+    <div id='container' style='border:1px solid #999;'></div>
+    <div id='results'></div>
 
     <!-- Load libraries -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="dist/openjub.js"></script>
+    <script src='http://lorenzoongithub.github.io/completely/complete.ly.1.0.1.min.js'></script>
 
-    <script type='text/javascript'>
-      $(function(){
-        //TODO: Write a lot of code. 
+    <script>
+      var client = new JUB.Client();
+      var lastId = -1;
+
+      var doSearch = JUB.utils.debounce(function(text){
+        if(text.length === 0){
+          return;
+        }
+
+        var myId = (new Date()).getTime();
+        lastId = myId;
+
+        document.getElementById('results').textContent = 'Searching ...';
+
+        client.search(text, [], function(err, res){
+          if(err){
+            console.error(err);
+            return;
+          }
+          if(lastId === myId){
+            document.getElementById('results').textContent = JSON.stringify(res.data, null, 4);
+          }
+        });
+      }, 1000);
+
+      var auto = completely(document.getElementById('container'), {
+      	fontSize : '24px',
+      	fontFamily : 'Arial',
+      	color:'#933',
+      });
+
+      auto.options = [];
+      auto.startIndex = 0;
+      auto.repaint();
+
+      auto.onChange = function(text){
+        var completion = client.complete(text, 20);
+
+        auto.options = completion.completions;
+        auto.startFrom = completion.startIndex;
+
+        auto.repaint();
+        doSearch(text); 
+      };
+
+      client.ready(function(){
+        auto.onChange('');
       });
     </script>
 </body>
