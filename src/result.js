@@ -38,6 +38,13 @@ JUB.result = module.exports = function result(data, query, client){
    * @property JUB.result#data
    */
  this.data = data.data;
+
+ /**
+   * The number of results the search received altogether.
+   * @type {number}
+   * @property JUB.result#count
+   */
+  this.count = data.count;
 }
 
 /**
@@ -66,7 +73,7 @@ var next = JUB.result.prototype.next = function next(callback){
  */
 var hasNext = JUB.result.prototype.hasNext = function hasNext(){
   return this._data.next !== false;
-}; 
+};
 
 /**
  * Gets the previous page of the result.

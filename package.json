@@ -1,7 +1,7 @@
 {
   "name": "openjub-js-sdk",
   "filename": "openjub",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A front-end JavaScript implementation of the OpenJUB API",
   "main": "dist/openjub.min.js",
   "scripts": {
