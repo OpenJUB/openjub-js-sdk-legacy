@@ -19,50 +19,74 @@
     <script src='https://lorenzoongithub.github.io/completely/complete.ly.1.0.1.min.js'></script>
 
     <script>
+      // create a new client.
       var client = new JUB.Client();
+
+      // store an id, so that we only have one query at a time.
       var lastId = -1;
 
+      // search function, we make sure this called only after 1 second of nothing. 
       var doSearch = JUB.utils.debounce(function(text){
+
+        // if there is nothing to search, return.
         if(text.length === 0){
           return;
         }
 
+        // make a new id and store it globally.
         var myId = (new Date()).getTime();
         lastId = myId;
 
+        // we are now searching.
         document.getElementById('results').textContent = 'Searching ...';
 
+        // so call the search on the client.
         client.search(text, [], function(err, res){
-          if(err){
-            console.error(err);
-            return;
-          }
+          // only do something if this query is still active.
           if(lastId === myId){
+
+            // if there was an error, log it.
+            if(err){
+              console.error(err);
+              document.getElementById('results').textContent = 'Error searching. ';
+              return;
+            }
+
+            // pretty-print to JSON results to the results div.
             document.getElementById('results').textContent = JSON.stringify(res.data, null, 4);
           }
         });
       }, 1000);
 
+      // create  a new completly instance
       var auto = completely(document.getElementById('container'), {
       	fontSize : '24px',
       	fontFamily : 'Arial',
       	color:'#933',
       });
 
+      // we have nothing to complete for now.
       auto.options = [];
       auto.startIndex = 0;
       auto.repaint();
 
+      // when the text changes, we should start autocompletion.
       auto.onChange = function(text){
+
+        // grab the completion data.
         var completion = client.complete(text, 20);
 
+        // set the options and the start.
         auto.options = completion.completions;
         auto.startFrom = completion.startIndex;
 
+        // repaint and start a search.
         auto.repaint();
         doSearch(text);
       };
 
+      // once the client has loaded the required data
+      // we are ready.
       client.ready(function(){
         auto.onChange('');
       });
