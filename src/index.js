@@ -9,13 +9,3 @@ var JUB = module.exports = {
   'Client': require('./client'),
   'Parser': require('./parser')
 };
-
-
-JUB.test = function(err, res){
-  if(err){
-    console.log("error", err);
-  } else {
-    console.log(res);
-    console.log(res.data);
-  }
-}
