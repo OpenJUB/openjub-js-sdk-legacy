@@ -63,6 +63,21 @@ var makeFunction = JUB.utils.makeFunction = function makeFunction(obj){
   */
 var extend = JUB.utils.extend = util._extend;
 
+/** Generates a GUID. 
+  * @function JUB.utils.guid
+  * @static
+  * @returns {string} A GUID
+  */
+var guid = JUB.utils.guid = function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 /** Sets a cookie (if possible).
   * @function JUB.utils.setCookie
   * @static
