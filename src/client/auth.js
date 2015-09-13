@@ -196,6 +196,6 @@ var authenticate = JUB.Client.prototype.authenticate = function authenticate(cal
   window.open(
     url, 
     '_blank',
-    'width=500, height=400, resizeable=no, toolbar=no, scrollbar=no, location=no'
+    'width=400, height=600, resizeable=no, toolbar=no, scrollbar=no, location=no'
   );
 }
