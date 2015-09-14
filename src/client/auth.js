@@ -148,54 +148,54 @@ var isOnCampus = JUB.Client.prototype.isOnCampus = function isOnCampus(callback)
   * @param {JUB.client~callback} callback - Callback once token is ready.
   */
 var authenticate = JUB.Client.prototype.authenticate = function authenticate(callback){
-  
+
   if(!process.browser){ return; } // browser only
-  
-  // reference to self. 
-  var me = this; 
-  
-  // generate a guid to use as the ID of the request. 
+
+  // reference to self.
+  var me = this;
+
+  // generate a guid to use as the ID of the request.
   var id = JUB.utils.guid();
-  
-  // create a listener. 
-  var listener = {'name': 'message'}; 
-  
-  // and add an event handler to it. 
+
+  // create a listener.
+  var listener = {'name': 'message'};
+
+  // and add an event handler to it.
   listener['handleEvent'] = function(e){
-    if(e.origin !== me.server){ return; } // we only want the right server. 
-    
+    if(e.origin !== me.server){ return; } // we only want the right server.
+
     // decode the data
-    var data = (typeof e.data === 'string'?JSON.parse(e.data):e.data); 
-    
-    // if we have a wrong id, return immediatly. 
+    var data = (typeof e.data === 'string'?JSON.parse(e.data):e.data);
+
+    // if we have a wrong id, return immediatly.
     if(typeof data.id === 'string' && data.id !== id){return; }
-    
-    // we can now remove the listener. 
+
+    // we can now remove the listener.
     window.removeEventListener('message', listener);
-    
-    // store the token. 
-    var token = data.token; 
+
+    // store the token.
+    var token = data.token;
     me.token = token;
 
-    // update the status. 
+    // update the status.
     me.status(callback);
-    
+
     // reload auto-complete
     me.getAutoComplete();
   }
-  
+
   // open an event listener
   window.addEventListener('message', listener, true); // add an event listener
-  
+
   var url = JUB.requests.buildGETUrl(
-    JUB.requests.joinURL(this.server, '/view/login'), 
+    JUB.requests.joinURL(this.server, '/view/login'),
     {'id': id, 'token': this.token}
   );
-  
+
   // and open a window
   window.open(
-    url, 
+    url,
     '_blank',
-    'width=400, height=600, resizeable=no, toolbar=no, scrollbar=no, location=no'
+    'width=400, height=700, resizeable=no, toolbar=no, scrollbar=no, location=no'
   );
 }

@@ -1,5 +1,6 @@
 var JUB = {
-  'utils': require('../utils')
+  'utils': require('../utils'),
+  'requests': require('../requests')
 };
 
 /**
@@ -27,7 +28,8 @@ JUB.Client = module.exports = function(server, callback){
     * @type {string}
     * @property JUB.Client#server
     */
-  this.server = server;
+  this.server = JUB.requests.joinURL(server, '');
+  this.server = this.server.substring(0, this.server.length - 1); //remove the / at the end
 
   /**
     * The token used for authentication.
