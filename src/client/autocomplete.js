@@ -1,7 +1,7 @@
 var JUB = {
   'utils': require('../utils'),
   'requests': require('../requests'),
-  'Parser': require('../parser'), 
+  'Parser': require('../parser'),
 };
 JUB.Client = module.exports = {'prototype': {}};
 
