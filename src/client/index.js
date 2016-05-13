@@ -6,7 +6,7 @@ var JUB = {
 /**
   * Creates a new OpenJUB client.
   * @class JUB.Client
-  * @param {string} [server = "api.jacobs-cs.club"] - The full adress of the OpenJUB server. Has to include protocol, port and may not have a trailing slash.
+  * @param {string} [server = "api.jacobs.university"] - The full adress of the OpenJUB server. Has to include protocol, port and may not have a trailing slash.
   * @param {JUB.client~callback} callback - Called when the client is ready. Contains status information.
   */
 JUB.Client = module.exports = function(server, callback){
@@ -14,7 +14,7 @@ JUB.Client = module.exports = function(server, callback){
   // take care of overloading.
   if(typeof server === 'function' || typeof server === 'undefined'){
     callback = server;
-    server = 'api.jacobs-cs.club';
+    server = 'api.jacobs.university';
   }
 
   //make sure callback is a function
